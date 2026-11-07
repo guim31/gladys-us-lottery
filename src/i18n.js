@@ -90,7 +90,7 @@ export const TIER_TEXT = {
     noPrize: 'Aucun gain',
   },
   de: {
-    whites: (count) => `${count} Richtige`,
+    whites: (count) => `${count} ${count === 1 ? 'Richtiger' : 'Richtige'}`,
     bonusOnly: (bonusName) => `nur ${bonusName}`,
     tier: (tier) => `Klasse ${tier}`,
     noPrize: 'Kein Gewinn',
@@ -121,7 +121,7 @@ export const STATE_TEXT = {
     won: (balls, tier, winning, count) =>
       `${balls} (${tier}) · ${winning}/${count} ${winning === 1 ? 'Tippreihe gewinnt' : 'Tippreihen gewinnen'}`,
     lost: (matches, count) =>
-      `Kein Gewinn · beste Tippreihe: ${matches} Richtige (${count} ${count === 1 ? 'Tippreihe' : 'Tippreihen'})`,
+      `Kein Gewinn · beste Tippreihe: ${matches} ${matches === 1 ? 'Richtiger' : 'Richtige'} (${count} ${count === 1 ? 'Tippreihe' : 'Tippreihen'})`,
   },
   es: {
     won: (balls, tier, winning, count) =>
@@ -162,7 +162,7 @@ export const SENTENCES = {
     won: (winning, count, balls, tier) =>
       ` Deine Tippreihen: ${winning} von ${count} gewinnen, am besten ${balls} (${tier}).`,
     lost: (count, matches) =>
-      ` Deine Tippreihen: kein Gewinn, am besten ${matches} Richtige bei ${count} ${count === 1 ? 'Tippreihe' : 'Tippreihen'}.`,
+      ` Deine Tippreihen: kein Gewinn, am besten ${matches} ${matches === 1 ? 'Richtiger' : 'Richtige'} bei ${count} ${count === 1 ? 'Tippreihe' : 'Tippreihen'}.`,
     next: (when) => ` Nächste Ziehung: ${when}.`,
     noData: (game) => `Die ${game}-Zahlen sind noch nicht bekannt.`,
   },
@@ -202,7 +202,7 @@ export const WIDGET_TEXT = {
     noData: 'Die Gewinnzahlen sind noch nicht bekannt: data.ny.gov konnte nicht gelesen werden.',
     nextDraws: 'Nächste Ziehung',
     line: (index, balls, result) => `Tippreihe ${index}: ${balls} → ${result}`,
-    matched: (matches) => `${matches} Richtige`,
+    matched: (matches) => `${matches} ${matches === 1 ? 'Richtiger' : 'Richtige'}`,
     caption: 'Nur zur Information: prüfe deine Lose bei der offiziellen Lotterie.',
   },
   es: {

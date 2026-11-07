@@ -129,7 +129,9 @@ export function parseDraw(gameKey, row) {
     date,
     whites,
     bonus,
-    multiplier: Number.isInteger(multiplier) && multiplier > 1 ? multiplier : null,
+    // Power Play: Powerball only (an old Megaplier is not shown as one).
+    multiplier:
+      gameKey === 'powerball' && Number.isInteger(multiplier) && multiplier > 1 ? multiplier : null,
     doublePlay: null,
   };
   if (gameKey === 'powerball' && row.double_play_winning_numbers) {

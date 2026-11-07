@@ -133,7 +133,7 @@ export function parseGrids(text, game) {
 }
 
 function parseGrid(chunk, game) {
-  if (!/^[\d\s,.+/-]+$/.test(chunk)) {
+  if (!/^[\d\s,+/-]+$/.test(chunk)) {
     return null;
   }
   const [main, extra, more] = chunk.split(/[+/]/);

@@ -221,3 +221,44 @@ test('lines not understood are reported in the status and by "Check"', async (t)
   assert.match(en, /Powerball: Not understood: "1 2 3 4 5 \+ 30"\./);
   assert.match(en, /Data read just now from data\.ny\.gov\./);
 });
+
+test('a game unread at install is not announced later for a draw held before it', async (t) => {
+  const api = fakeOpenData();
+  const world = await createWorld({ api, at: '2026-11-07T10:00:00Z', connect: false });
+  t.after(() => world.app.stop());
+  // Mega Millions fails at install, Powerball answers.
+  const realFetch = api.fetch;
+  api.fetch = async (url) => {
+    if (url.includes('5xaw-6ayf')) {
+      throw new Error('timeout');
+    }
+    return realFetch(url);
+  };
+  world.app.service.api = (await import('../src/opendata.js')).createOpenData({
+    fetch: (u) => api.fetch(u),
+  });
+  await world.gladys.connect();
+  assert.equal(world.state('mega_millions', 'last_numbers'), undefined);
+  api.fetch = realFetch;
+  await world.runUntil('2026-11-07T10:12:00Z');
+  assert.equal(world.state('mega_millions', 'last_numbers'), '27 34 44 53 64 + 01');
+  assert.deepEqual(world.gladys.fake.sceneEvents, []);
+});
+
+test('a draw Gladys refused is announced at the next reading', async (t) => {
+  const api = fakeOpenData({ skip: 1 });
+  const world = await createWorld({ at: '2026-11-07T10:00:00Z', api });
+  t.after(() => world.app.stop());
+  api.skip = 0;
+  const refused = t.mock.method(world.gladys, 'publishSceneEvent', async () => {
+    throw new Error('Gladys is restarting');
+  });
+  await world.runUntil('2026-11-07T11:01:00Z');
+  refused.mock.restore();
+  assert.deepEqual(world.gladys.fake.sceneEvents, []);
+  await world.runUntil('2026-11-07T12:01:00Z');
+  assert.deepEqual(
+    world.gladys.fake.sceneEvents.map((event) => `${event.key}:${event.data.game}`),
+    ['new_draw:powerball', 'new_draw:mega_millions'],
+  );
+});

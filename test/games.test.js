@@ -88,6 +88,7 @@ test('lines are read with "+", "/" or as six numbers, and wrong ones are kept ap
     'deux',
     '1 2 3 4 5 6 7',
   ]);
+  assert.deepEqual(parseGrids('1.5 2 3 4 5', powerball).invalid, ['1.5 2 3 4 5']);
   // 70 and 24 are Mega Millions numbers, 25 is not any more.
   assert.equal(parseGrids('1 2 3 4 70 + 24', megaMillions).grids.length, 1);
   assert.equal(parseGrids('1 2 3 4 70 + 25', megaMillions).grids.length, 0);

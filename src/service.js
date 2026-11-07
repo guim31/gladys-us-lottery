@@ -66,7 +66,8 @@ export class LotteryService {
     this.fetchedAt = 0;
     this.apiError = null;
     this.lastAttempt = 0;
-    this.announced = null;
+    this.announced = {};
+    this.installedAt = 0;
     this.lastForce = 0;
     this.statusKey = null;
     this.widgetKey = null;
@@ -87,8 +88,13 @@ export class LotteryService {
     return this.serial(async () => {
       this.config = config;
       this.loadCache();
-      // A fresh install announces nothing: the draws read first are known.
-      this.announced = this.store.load(TRIGGERS_FILE)?.announced ?? null;
+      // A fresh install announces no draw held before it.
+      const saved = this.store.load(TRIGGERS_FILE);
+      this.announced = saved?.announced ?? {};
+      this.installedAt = saved ? (saved.installedAt ?? 0) : this.now();
+      if (!saved) {
+        this.saveTriggers();
+      }
       // The clock runs whatever happens below: a failure at start-up must not
       // stop the readings and the triggers until the next restart.
       this.schedule();
@@ -337,38 +343,44 @@ export class LotteryService {
     }
   }
 
-  /** A new draw of a game: its triggers, once per draw, for a recent draw. */
+  saveTriggers() {
+    this.store.save(TRIGGERS_FILE, { announced: this.announced, installedAt: this.installedAt });
+  }
+
+  /**
+   * A new draw of a game: its triggers, once per draw, for a recent draw. A
+   * game seen for the first time is only announced for a draw held after the
+   * install (a read that failed at install time is no news). A draw Gladys
+   * refused is tried again at the next reading.
+   */
   async announceDraws(now) {
-    const first = this.announced === null;
-    if (first) {
-      if (!GAME_KEYS.some((key) => this.draws[key])) {
-        return; // nothing known yet: the first draws read are not news
-      }
-      this.announced = {};
-    }
-    let save = first;
+    let save = false;
     for (const key of GAME_KEYS) {
       const draw = this.draws[key];
-      if (!draw || (this.announced[key] && this.announced[key] >= draw.date)) {
+      const known = this.announced[key];
+      if (!draw || (known && known >= draw.date)) {
         continue;
+      }
+      const at = drawInstant(GAMES[key], draw.date);
+      const news = (known || at >= this.installedAt) && now - at <= ANNOUNCE_WITHIN;
+      if (news) {
+        const data = eventData(this, key);
+        if (!(await this.fireEvent(TRIGGERS.NEW_DRAW, data))) {
+          continue;
+        }
+        if (data.lines > 0) {
+          await this.fireEvent(TRIGGERS.NUMBERS_MATCHED, data);
+        }
+        if (data.best_tier > 0) {
+          await this.fireEvent(TRIGGERS.WINNING_LINE, data);
+        }
+        logger.debug(`New ${GAMES[key].name} draw: ${drawSummary(this, key).sentence}`);
       }
       this.announced[key] = draw.date;
       save = true;
-      if (first || now - drawInstant(GAMES[key], draw.date) > ANNOUNCE_WITHIN) {
-        continue;
-      }
-      const data = eventData(this, key);
-      await this.fireEvent(TRIGGERS.NEW_DRAW, data);
-      if (data.lines > 0) {
-        await this.fireEvent(TRIGGERS.NUMBERS_MATCHED, data);
-      }
-      if (data.best_tier > 0) {
-        await this.fireEvent(TRIGGERS.WINNING_LINE, data);
-      }
-      logger.debug(`New ${GAMES[key].name} draw: ${drawSummary(this, key).sentence}`);
     }
     if (save) {
-      this.store.save(TRIGGERS_FILE, { announced: this.announced });
+      this.saveTriggers();
     }
   }
 }

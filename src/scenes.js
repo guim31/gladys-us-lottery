@@ -16,7 +16,10 @@ export const DEFAULT_GAME = 'powerball';
 function nextDrawText(service, gameKey, language) {
   const { at } = nextDraw(GAMES[gameKey], service.now());
   const day = formatDay(at, language, service.timeZone, 'long');
-  return `${day} ${AT[language]} ${formatTime(at, language, service.timeZone)}`;
+  const time = formatTime(at, language, service.timeZone);
+  // Spanish says "a la una", "a las dos".
+  const word = language === 'es' && time.startsWith('01:') ? 'a la' : AT[language];
+  return `${day} ${word} ${time}`;
 }
 
 /**
