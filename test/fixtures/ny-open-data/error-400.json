@@ -1,0 +1,13 @@
+{
+  "message": "Query coordinator error: query.soql.no-such-column; No such column: draw_dat; position: Map(row -> 1, column -> 215, line -> \"SELECT `draw_date`, `winning_numbers`, `multiplier`, `double_play_winning_numbers` ORDER BY `draw_date` DESC NULL LAST |> SELECT `draw_date`, `winning_numbers`, `multiplier`, `double_play_winning_numbers` ORDER BY `draw_dat` DESC NULL FIRST LIMIT 3\\n                                                                                                                                                                                                                      ^\")",
+  "errorCode": "query.soql.no-such-column",
+  "data": {
+    "column": "draw_dat",
+    "dataset": "foxtrot.6084",
+    "position": {
+      "row": 1,
+      "column": 215,
+      "line": "SELECT `draw_date`, `winning_numbers`, `multiplier`, `double_play_winning_numbers` ORDER BY `draw_date` DESC NULL LAST |> SELECT `draw_date`, `winning_numbers`, `multiplier`, `double_play_winning_numbers` ORDER BY `draw_dat` DESC NULL FIRST LIMIT 3\n                                                                                                                                                                                                                      ^"
+    }
+  }
+}

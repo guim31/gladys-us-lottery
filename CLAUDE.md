@@ -31,16 +31,22 @@ pushing.
 ## Architecture
 
 ```
-index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+index.js                          SDK wiring only: handlers registered in src/app.js
+src/app.js                        every SDK handler -> the service; the "Check" action report
+src/service.js                    the clock (1 min): readings, cache, states, triggers, status
+src/opendata.js                   data.ny.gov client and row parser
+src/games.js                      the two games: calendar, prize tiers, lines parsed and checked
+src/device.js                     the two devices (one per game) and their states
+src/scenes.js                     summary sentence, trigger data, "read_last_draw"
+src/widgets.js                    dashboard widget "us_lottery"
+src/i18n.js                       every text of the code, en/fr/de/es
+src/time.js                       time zones (Gladys, New York), formatting
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
-gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
+src/store.js, src/failures.js     JSON files in /data; repeated failures logged once
+gladys-assistant-integration.json manifest: name, config_schema, actions, triggers, widget...
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (mandatory)
 test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+test/fixtures/ny-open-data/       real answers of data.ny.gov recorded on 2026-11-08
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -251,3 +257,22 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## Powerball & Mega Millions (data.ny.gov)
+
+- Source : Socrata de l'État de New York, sans clé. Powerball `d6yy-54nr` (`winning_numbers` = 5 boules + le
+  Powerball en sixième, `multiplier` = Power Play, `double_play_winning_numbers`), Mega Millions `5xaw-6ayf`
+  (`winning_numbers` = 5 boules, `mega_ball` à part ; plus de `multiplier` depuis la refonte d'avril 2025). Les
+  numéros arrivent le lendemain matin du tirage (heure de New York), vers 3-4 h ET. Une requête par jeu et par
+  heure (`$order=draw_date DESC&$limit=3`) ; un mauvais nom de colonne répond 400 avec un JSON `message`.
+- Matrices actuelles : Powerball 69/26, Mega Millions 70/24 (la Mega Ball allait jusqu'à 25 avant avril 2025 :
+  `parseDraw` rejette une ligne hors matrice). Les neuf rangs sont les mêmes pour les deux jeux (`tierOf`).
+- **Aucun montant** : le jackpot n'est pas dans l'open data, le multiplicateur (Power Play, intégré au Mega
+  Millions) change les autres gains, la Californie paie au pari mutuel. Ne pas aller gratter un site.
+- Tirages : Powerball lun./mer./sam. 22 h 59 ET, Mega Millions mar./ven. 23 h ET, calculés par
+  `zonedInstant` (heure d'été comprise) : vu de Paris, le tirage tombe le lendemain vers 5 h, d'où
+  « Tirage demain » à côté de « Tirage aujourd'hui ».
+- Déclencheurs : un filtre de scène ne fait qu'égalité ou appartenance, et compare des **chaînes** pour un
+  `select`/`multi_select`. Les clés de filtre (`matches`, `tier`) partent donc en texte, à côté des variables
+  numériques (`best_matches`, `best_tier`). « Au moins 3 » = cocher 3, 4, 5 et 6.
+- `countries: ["US"]`, d'où `gladys_version >=5.3.0`.

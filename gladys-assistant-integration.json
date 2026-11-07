@@ -1,177 +1,1047 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "Powerball & Mega Millions",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Powerball and Mega Millions numbers, next draws and your lines checked, for dashboards and scenes.",
+    "fr": "Numéros du Powerball et du Mega Millions, prochains tirages et vos grilles vérifiées.",
+    "de": "Gewinnzahlen von Powerball und Mega Millions, nächste Ziehungen und deine Tippreihen geprüft.",
+    "es": "Números de Powerball y Mega Millions, próximos sorteos y sus jugadas comprobadas."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
-  "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "docker_image": "ghcr.io/guim31/gladys-us-lottery:1.0.0",
+  "gladys_version": ">=5.3.0",
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-us-lottery/main/cover.png",
+  "categories": ["leisure"],
+  "countries": ["US"],
+  "transports": ["cloud"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "How it works",
+        "fr": "Fonctionnement",
+        "de": "So funktioniert es",
+        "es": "Funcionamiento"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "The winning numbers come from the open data of the State of New York (data.ny.gov): no account, no key. They are for information only, not an official result. After saving, add the Powerball and Mega Millions devices in the Discover tab.",
+        "fr": "Les numéros gagnants viennent des données ouvertes de l'État de New York (data.ny.gov) : pas de compte, pas de clé. Ils sont indicatifs, pas un résultat officiel. Après l'enregistrement, ajoutez les appareils Powerball et Mega Millions dans l'onglet Découverte.",
+        "de": "Die Gewinnzahlen stammen aus den offenen Daten des Bundesstaats New York (data.ny.gov): kein Konto, kein Schlüssel. Die Angaben sind nur informativ, kein amtliches Ergebnis. Füge nach dem Speichern die Geräte Powerball und Mega Millions im Tab „Entdecken“ hinzu.",
+        "es": "Los números ganadores proceden de los datos abiertos del Estado de Nueva York (data.ny.gov): sin cuenta ni clave. Son solo informativos, no un resultado oficial. Después de guardar, añada los dispositivos Powerball y Mega Millions en la pestaña Descubrir."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://github.com/guim31/gladys-us-lottery#readme",
+          "label": {
+            "en": "Documentation",
+            "fr": "Documentation",
+            "de": "Dokumentation",
+            "es": "Documentación"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
-      },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
-    },
-    {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
-      },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
-    },
-    {
-      "key": "unit",
+      "key": "language",
       "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Feature names and the sentences of the scenes. Names are set when a device is added.",
+        "fr": "Noms des fonctionnalités et phrases des scènes. Les noms sont fixés à l'ajout d'un appareil.",
+        "de": "Namen der Funktionen und Sätze der Szenen. Die Namen werden beim Hinzufügen eines Geräts festgelegt.",
+        "es": "Nombres de las funciones y frases de las escenas. Los nombres se fijan al añadir un dispositivo."
+      },
       "required": false,
-      "default": "celsius",
+      "default": "fr",
       "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
       ]
     },
     {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "powerball_grids",
+      "type": "string",
+      "label": {
+        "en": "Your Powerball lines",
+        "fr": "Vos grilles Powerball",
+        "de": "Deine Powerball-Tippreihen",
+        "es": "Sus jugadas de Powerball"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Optional. Your Powerball lines: 5 numbers from 1 to 69, then + and the Powerball from 1 to 26. Separate lines with a semicolon. Up to 10 lines.",
+        "fr": "Facultatif. Vos grilles Powerball : 5 numéros de 1 à 69, puis + et le Powerball de 1 à 26. Séparez les grilles par un point-virgule. 10 grilles au plus.",
+        "de": "Optional. Deine Powerball-Tippreihen: 5 Zahlen von 1 bis 69, dann + und der Powerball von 1 bis 26. Trenne die Tippreihen mit einem Semikolon. Höchstens 10.",
+        "es": "Opcional. Sus jugadas de Powerball: 5 números del 1 al 69, luego + y el Powerball del 1 al 26. Separe las jugadas con un punto y coma. Hasta 10 jugadas."
+      },
+      "placeholder": {
+        "en": "e.g. 5 12 23 34 45 + 6; 1 7 19 28 60 + 13",
+        "fr": "ex. 5 12 23 34 45 + 6 ; 1 7 19 28 60 + 13",
+        "de": "z. B. 5 12 23 34 45 + 6; 1 7 19 28 60 + 13",
+        "es": "p. ej. 5 12 23 34 45 + 6; 1 7 19 28 60 + 13"
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": ""
+    },
+    {
+      "key": "mega_millions_grids",
+      "type": "string",
+      "label": {
+        "en": "Your Mega Millions lines",
+        "fr": "Vos grilles Mega Millions",
+        "de": "Deine Mega-Millions-Tippreihen",
+        "es": "Sus jugadas de Mega Millions"
+      },
+      "description": {
+        "en": "Optional. Your Mega Millions lines: 5 numbers from 1 to 70, then + and the Mega Ball from 1 to 24. Separate lines with a semicolon. Up to 10 lines.",
+        "fr": "Facultatif. Vos grilles Mega Millions : 5 numéros de 1 à 70, puis + et la Mega Ball de 1 à 24. Séparez les grilles par un point-virgule. 10 grilles au plus.",
+        "de": "Optional. Deine Mega-Millions-Tippreihen: 5 Zahlen von 1 bis 70, dann + und der Mega Ball von 1 bis 24. Trenne die Tippreihen mit einem Semikolon. Höchstens 10.",
+        "es": "Opcional. Sus jugadas de Mega Millions: 5 números del 1 al 70, luego + y la Mega Ball del 1 al 24. Separe las jugadas con un punto y coma. Hasta 10 jugadas."
+      },
+      "placeholder": {
+        "en": "e.g. 3 14 27 41 66 + 9; 8 21 35 50 70 + 2",
+        "fr": "ex. 3 14 27 41 66 + 9 ; 8 21 35 50 70 + 2",
+        "de": "z. B. 3 14 27 41 66 + 9; 8 21 35 50 70 + 2",
+        "es": "p. ej. 3 14 27 41 66 + 9; 8 21 35 50 70 + 2"
+      },
+      "required": false,
+      "default": ""
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
-    },
-    {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ]
+      "key": "check",
+      "label": {
+        "en": "Check",
+        "fr": "Vérifier",
+        "de": "Prüfen",
+        "es": "Comprobar"
+      },
+      "description": {
+        "en": "Reads data.ny.gov again now and shows the last draws, the next ones and your lines.",
+        "fr": "Relit data.ny.gov maintenant et affiche les derniers tirages, les prochains et vos grilles.",
+        "de": "Liest data.ny.gov jetzt neu und zeigt die letzten Ziehungen, die nächsten und deine Tippreihen.",
+        "es": "Vuelve a leer data.ny.gov ahora y muestra los últimos sorteos, los próximos y sus jugadas."
+      },
+      "timeout_seconds": 60
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "new_draw",
+      "label": {
+        "en": "New draw published",
+        "fr": "Nouveau tirage publié",
+        "de": "Neue Ziehung veröffentlicht",
+        "es": "Nuevo sorteo publicado"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "Fires when the numbers of a new draw are published, usually the morning after the draw (New York time).",
+        "fr": "Se déclenche à la publication des numéros d'un nouveau tirage, en général le lendemain matin (heure de New York).",
+        "de": "Löst aus, wenn die Zahlen einer neuen Ziehung veröffentlicht werden, meist am Morgen danach (Ortszeit New York).",
+        "es": "Se activa cuando se publican los números de un nuevo sorteo, normalmente la mañana siguiente (hora de Nueva York)."
       },
       "fields": [
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
-        },
-        {
-          "key": "target",
+          "key": "game",
           "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "label": {
+            "en": "Games",
+            "fr": "Jeux",
+            "de": "Spiele",
+            "es": "Juegos"
+          },
+          "description": {
+            "en": "Empty: both games.",
+            "fr": "Vide : les deux jeux.",
+            "de": "Leer: beide Spiele.",
+            "es": "Vacío: ambos juegos."
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "powerball",
+              "label": {
+                "en": "Powerball",
+                "fr": "Powerball",
+                "de": "Powerball",
+                "es": "Powerball"
+              }
+            },
+            {
+              "value": "mega_millions",
+              "label": {
+                "en": "Mega Millions",
+                "fr": "Mega Millions",
+                "de": "Mega Millions",
+                "es": "Mega Millions"
+              }
+            }
           ]
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "game_name",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Game",
+            "fr": "Jeu",
+            "de": "Spiel",
+            "es": "Juego"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "draw_date",
+          "type": "string",
+          "label": {
+            "en": "Draw date",
+            "fr": "Date du tirage",
+            "de": "Ziehungsdatum",
+            "es": "Fecha del sorteo"
+          }
+        },
+        {
+          "key": "numbers",
+          "type": "string",
+          "label": {
+            "en": "Winning numbers",
+            "fr": "Numéros gagnants",
+            "de": "Gewinnzahlen",
+            "es": "Números ganadores"
+          }
+        },
+        {
+          "key": "bonus_ball",
+          "type": "number",
+          "label": {
+            "en": "Powerball or Mega Ball",
+            "fr": "Powerball ou Mega Ball",
+            "de": "Powerball oder Mega Ball",
+            "es": "Powerball o Mega Ball"
+          }
+        },
+        {
+          "key": "power_play",
+          "type": "number",
+          "label": {
+            "en": "Power Play (0: none)",
+            "fr": "Power Play (0 : aucun)",
+            "de": "Power Play (0: keins)",
+            "es": "Power Play (0: ninguno)"
+          }
+        },
+        {
+          "key": "lines",
+          "type": "number",
+          "label": {
+            "en": "Lines checked",
+            "fr": "Grilles vérifiées",
+            "de": "Geprüfte Tippreihen",
+            "es": "Jugadas comprobadas"
+          }
+        },
+        {
+          "key": "best_matches",
+          "type": "number",
+          "label": {
+            "en": "Numbers matched (best line)",
+            "fr": "Bons numéros (meilleure grille)",
+            "de": "Richtige (beste Tippreihe)",
+            "es": "Aciertos (mejor jugada)"
+          }
+        },
+        {
+          "key": "best_tier",
+          "type": "number",
+          "label": {
+            "en": "Prize tier (0: none)",
+            "fr": "Rang de gain (0 : aucun)",
+            "de": "Gewinnklasse (0: keine)",
+            "es": "Categoría de premio (0: ninguna)"
+          }
+        },
+        {
+          "key": "winning_lines",
+          "type": "number",
+          "label": {
+            "en": "Winning lines",
+            "fr": "Grilles gagnantes",
+            "de": "Gewinnende Tippreihen",
+            "es": "Jugadas ganadoras"
+          }
+        },
+        {
+          "key": "best_result",
+          "type": "string",
+          "label": {
+            "en": "Best result",
+            "fr": "Meilleur résultat",
+            "de": "Bestes Ergebnis",
+            "es": "Mejor resultado"
+          }
+        }
+      ]
+    },
+    {
+      "key": "numbers_matched",
+      "label": {
+        "en": "Numbers matched",
+        "fr": "Bons numéros",
+        "de": "Richtige Zahlen",
+        "es": "Números acertados"
+      },
+      "description": {
+        "en": "Fires at each new draw with the count of numbers your best line matched, Powerball or Mega Ball included. Tick 3, 4, 5 and 6 for \"at least 3\".",
+        "fr": "Se déclenche à chaque nouveau tirage avec le nombre de bons numéros de votre meilleure grille, Powerball ou Mega Ball compris. Cochez 3, 4, 5 et 6 pour « au moins 3 ».",
+        "de": "Löst bei jeder neuen Ziehung mit der Zahl der Richtigen deiner besten Tippreihe aus, Powerball oder Mega Ball inklusive. Wähle 3, 4, 5 und 6 für „mindestens 3“.",
+        "es": "Se activa en cada nuevo sorteo con los aciertos de su mejor jugada, Powerball o Mega Ball incluida. Marque 3, 4, 5 y 6 para «al menos 3»."
+      },
+      "fields": [
+        {
+          "key": "game",
+          "type": "multi_select",
+          "label": {
+            "en": "Games",
+            "fr": "Jeux",
+            "de": "Spiele",
+            "es": "Juegos"
+          },
+          "description": {
+            "en": "Empty: both games.",
+            "fr": "Vide : les deux jeux.",
+            "de": "Leer: beide Spiele.",
+            "es": "Vacío: ambos juegos."
+          },
+          "options": [
+            {
+              "value": "powerball",
+              "label": {
+                "en": "Powerball",
+                "fr": "Powerball",
+                "de": "Powerball",
+                "es": "Powerball"
+              }
+            },
+            {
+              "value": "mega_millions",
+              "label": {
+                "en": "Mega Millions",
+                "fr": "Mega Millions",
+                "de": "Mega Millions",
+                "es": "Mega Millions"
+              }
+            }
+          ]
+        },
+        {
+          "key": "matches",
+          "type": "multi_select",
+          "required": true,
+          "label": {
+            "en": "Numbers matched",
+            "fr": "Bons numéros",
+            "de": "Richtige",
+            "es": "Aciertos"
+          },
+          "options": [
+            {
+              "value": "0",
+              "label": {
+                "en": "0 numbers",
+                "fr": "0 numéro",
+                "de": "0 Richtige",
+                "es": "0 aciertos"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "en": "1 number",
+                "fr": "1 bon numéro",
+                "de": "1 Richtiger",
+                "es": "1 acierto"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "2 numbers",
+                "fr": "2 bons numéros",
+                "de": "2 Richtige",
+                "es": "2 aciertos"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "3 numbers",
+                "fr": "3 bons numéros",
+                "de": "3 Richtige",
+                "es": "3 aciertos"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "4 numbers",
+                "fr": "4 bons numéros",
+                "de": "4 Richtige",
+                "es": "4 aciertos"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "5 numbers",
+                "fr": "5 bons numéros",
+                "de": "5 Richtige",
+                "es": "5 aciertos"
+              }
+            },
+            {
+              "value": "6",
+              "label": {
+                "en": "6 numbers",
+                "fr": "6 bons numéros",
+                "de": "6 Richtige",
+                "es": "6 aciertos"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "game_name",
+          "type": "string",
+          "label": {
+            "en": "Game",
+            "fr": "Jeu",
+            "de": "Spiel",
+            "es": "Juego"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "draw_date",
+          "type": "string",
+          "label": {
+            "en": "Draw date",
+            "fr": "Date du tirage",
+            "de": "Ziehungsdatum",
+            "es": "Fecha del sorteo"
+          }
+        },
+        {
+          "key": "numbers",
+          "type": "string",
+          "label": {
+            "en": "Winning numbers",
+            "fr": "Numéros gagnants",
+            "de": "Gewinnzahlen",
+            "es": "Números ganadores"
+          }
+        },
+        {
+          "key": "bonus_ball",
+          "type": "number",
+          "label": {
+            "en": "Powerball or Mega Ball",
+            "fr": "Powerball ou Mega Ball",
+            "de": "Powerball oder Mega Ball",
+            "es": "Powerball o Mega Ball"
+          }
+        },
+        {
+          "key": "power_play",
+          "type": "number",
+          "label": {
+            "en": "Power Play (0: none)",
+            "fr": "Power Play (0 : aucun)",
+            "de": "Power Play (0: keins)",
+            "es": "Power Play (0: ninguno)"
+          }
+        },
+        {
+          "key": "lines",
+          "type": "number",
+          "label": {
+            "en": "Lines checked",
+            "fr": "Grilles vérifiées",
+            "de": "Geprüfte Tippreihen",
+            "es": "Jugadas comprobadas"
+          }
+        },
+        {
+          "key": "best_matches",
+          "type": "number",
+          "label": {
+            "en": "Numbers matched (best line)",
+            "fr": "Bons numéros (meilleure grille)",
+            "de": "Richtige (beste Tippreihe)",
+            "es": "Aciertos (mejor jugada)"
+          }
+        },
+        {
+          "key": "best_tier",
+          "type": "number",
+          "label": {
+            "en": "Prize tier (0: none)",
+            "fr": "Rang de gain (0 : aucun)",
+            "de": "Gewinnklasse (0: keine)",
+            "es": "Categoría de premio (0: ninguna)"
+          }
+        },
+        {
+          "key": "winning_lines",
+          "type": "number",
+          "label": {
+            "en": "Winning lines",
+            "fr": "Grilles gagnantes",
+            "de": "Gewinnende Tippreihen",
+            "es": "Jugadas ganadoras"
+          }
+        },
+        {
+          "key": "best_result",
+          "type": "string",
+          "label": {
+            "en": "Best result",
+            "fr": "Meilleur résultat",
+            "de": "Bestes Ergebnis",
+            "es": "Mejor resultado"
+          }
+        }
+      ]
+    },
+    {
+      "key": "winning_line",
+      "label": {
+        "en": "Winning line",
+        "fr": "Grille gagnante",
+        "de": "Gewinnende Tippreihe",
+        "es": "Jugada ganadora"
+      },
+      "description": {
+        "en": "Fires at a new draw when one of your lines wins a prize tier. Check your ticket with the official lottery.",
+        "fr": "Se déclenche à un nouveau tirage quand une de vos grilles atteint un rang de gain. Vérifiez votre ticket auprès de la loterie officielle.",
+        "de": "Löst bei einer neuen Ziehung aus, wenn eine deiner Tippreihen eine Gewinnklasse erreicht. Prüfe dein Los bei der offiziellen Lotterie.",
+        "es": "Se activa en un nuevo sorteo cuando una de sus jugadas alcanza una categoría de premio. Compruebe su boleto con la lotería oficial."
+      },
+      "fields": [
+        {
+          "key": "game",
+          "type": "multi_select",
+          "label": {
+            "en": "Games",
+            "fr": "Jeux",
+            "de": "Spiele",
+            "es": "Juegos"
+          },
+          "description": {
+            "en": "Empty: both games.",
+            "fr": "Vide : les deux jeux.",
+            "de": "Leer: beide Spiele.",
+            "es": "Vacío: ambos juegos."
+          },
+          "options": [
+            {
+              "value": "powerball",
+              "label": {
+                "en": "Powerball",
+                "fr": "Powerball",
+                "de": "Powerball",
+                "es": "Powerball"
+              }
+            },
+            {
+              "value": "mega_millions",
+              "label": {
+                "en": "Mega Millions",
+                "fr": "Mega Millions",
+                "de": "Mega Millions",
+                "es": "Mega Millions"
+              }
+            }
+          ]
+        },
+        {
+          "key": "tier",
+          "type": "multi_select",
+          "label": {
+            "en": "Prize tiers",
+            "fr": "Rangs de gain",
+            "de": "Gewinnklassen",
+            "es": "Categorías de premio"
+          },
+          "description": {
+            "en": "Empty: any prize.",
+            "fr": "Vide : n'importe quel gain.",
+            "de": "Leer: jeder Gewinn.",
+            "es": "Vacío: cualquier premio."
+          },
+          "options": [
+            {
+              "value": "1",
+              "label": {
+                "en": "Tier 1: 5 + bonus ball (jackpot)",
+                "fr": "Rang 1 : 5 + boule bonus (jackpot)",
+                "de": "Klasse 1: 5 + Zusatzkugel (Jackpot)",
+                "es": "Categoría 1: 5 + bola extra (bote)"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Tier 2: 5 numbers",
+                "fr": "Rang 2 : 5 numéros",
+                "de": "Klasse 2: 5 Richtige",
+                "es": "Categoría 2: 5 números"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "Tier 3: 4 + bonus ball",
+                "fr": "Rang 3 : 4 + boule bonus",
+                "de": "Klasse 3: 4 + Zusatzkugel",
+                "es": "Categoría 3: 4 + bola extra"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "Tier 4: 4 numbers",
+                "fr": "Rang 4 : 4 numéros",
+                "de": "Klasse 4: 4 Richtige",
+                "es": "Categoría 4: 4 números"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "Tier 5: 3 + bonus ball",
+                "fr": "Rang 5 : 3 + boule bonus",
+                "de": "Klasse 5: 3 + Zusatzkugel",
+                "es": "Categoría 5: 3 + bola extra"
+              }
+            },
+            {
+              "value": "6",
+              "label": {
+                "en": "Tier 6: 3 numbers",
+                "fr": "Rang 6 : 3 numéros",
+                "de": "Klasse 6: 3 Richtige",
+                "es": "Categoría 6: 3 números"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "en": "Tier 7: 2 + bonus ball",
+                "fr": "Rang 7 : 2 + boule bonus",
+                "de": "Klasse 7: 2 + Zusatzkugel",
+                "es": "Categoría 7: 2 + bola extra"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "en": "Tier 8: 1 + bonus ball",
+                "fr": "Rang 8 : 1 + boule bonus",
+                "de": "Klasse 8: 1 + Zusatzkugel",
+                "es": "Categoría 8: 1 + bola extra"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "en": "Tier 9: bonus ball only",
+                "fr": "Rang 9 : boule bonus seule",
+                "de": "Klasse 9: nur Zusatzkugel",
+                "es": "Categoría 9: solo bola extra"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "game_name",
+          "type": "string",
+          "label": {
+            "en": "Game",
+            "fr": "Jeu",
+            "de": "Spiel",
+            "es": "Juego"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "draw_date",
+          "type": "string",
+          "label": {
+            "en": "Draw date",
+            "fr": "Date du tirage",
+            "de": "Ziehungsdatum",
+            "es": "Fecha del sorteo"
+          }
+        },
+        {
+          "key": "numbers",
+          "type": "string",
+          "label": {
+            "en": "Winning numbers",
+            "fr": "Numéros gagnants",
+            "de": "Gewinnzahlen",
+            "es": "Números ganadores"
+          }
+        },
+        {
+          "key": "bonus_ball",
+          "type": "number",
+          "label": {
+            "en": "Powerball or Mega Ball",
+            "fr": "Powerball ou Mega Ball",
+            "de": "Powerball oder Mega Ball",
+            "es": "Powerball o Mega Ball"
+          }
+        },
+        {
+          "key": "power_play",
+          "type": "number",
+          "label": {
+            "en": "Power Play (0: none)",
+            "fr": "Power Play (0 : aucun)",
+            "de": "Power Play (0: keins)",
+            "es": "Power Play (0: ninguno)"
+          }
+        },
+        {
+          "key": "lines",
+          "type": "number",
+          "label": {
+            "en": "Lines checked",
+            "fr": "Grilles vérifiées",
+            "de": "Geprüfte Tippreihen",
+            "es": "Jugadas comprobadas"
+          }
+        },
+        {
+          "key": "best_matches",
+          "type": "number",
+          "label": {
+            "en": "Numbers matched (best line)",
+            "fr": "Bons numéros (meilleure grille)",
+            "de": "Richtige (beste Tippreihe)",
+            "es": "Aciertos (mejor jugada)"
+          }
+        },
+        {
+          "key": "best_tier",
+          "type": "number",
+          "label": {
+            "en": "Prize tier (0: none)",
+            "fr": "Rang de gain (0 : aucun)",
+            "de": "Gewinnklasse (0: keine)",
+            "es": "Categoría de premio (0: ninguna)"
+          }
+        },
+        {
+          "key": "winning_lines",
+          "type": "number",
+          "label": {
+            "en": "Winning lines",
+            "fr": "Grilles gagnantes",
+            "de": "Gewinnende Tippreihen",
+            "es": "Jugadas ganadoras"
+          }
+        },
+        {
+          "key": "best_result",
+          "type": "string",
+          "label": {
+            "en": "Best result",
+            "fr": "Meilleur résultat",
+            "de": "Bestes Ergebnis",
+            "es": "Mejor resultado"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "read_last_draw",
+      "label": {
+        "en": "Read the last draw",
+        "fr": "Lire le dernier tirage",
+        "de": "Letzte Ziehung lesen",
+        "es": "Leer el último sorteo"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "A sentence ready to send: the last numbers of a game, your lines and the next draw.",
+        "fr": "Une phrase prête à envoyer : les derniers numéros d'un jeu, vos grilles et le prochain tirage.",
+        "de": "Ein fertiger Satz zum Senden: die letzten Zahlen eines Spiels, deine Tippreihen und die nächste Ziehung.",
+        "es": "Una frase lista para enviar: los últimos números de un juego, sus jugadas y el próximo sorteo."
+      },
+      "timeout_seconds": 10,
       "fields": [
         {
-          "key": "device",
+          "key": "game",
           "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "label": {
+            "en": "Game",
+            "fr": "Jeu",
+            "de": "Spiel",
+            "es": "Juego"
+          },
+          "required": false,
+          "default": "powerball",
+          "options": [
+            {
+              "value": "powerball",
+              "label": {
+                "en": "Powerball",
+                "fr": "Powerball",
+                "de": "Powerball",
+                "es": "Powerball"
+              }
+            },
+            {
+              "value": "mega_millions",
+              "label": {
+                "en": "Mega Millions",
+                "fr": "Mega Millions",
+                "de": "Mega Millions",
+                "es": "Mega Millions"
+              }
+            }
+          ]
         }
       ],
       "outputs": [
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "sentence",
+          "type": "string",
+          "label": {
+            "en": "Sentence",
+            "fr": "Phrase",
+            "de": "Satz",
+            "es": "Frase"
+          }
+        },
+        {
+          "key": "numbers",
+          "type": "string",
+          "label": {
+            "en": "Winning numbers",
+            "fr": "Numéros gagnants",
+            "de": "Gewinnzahlen",
+            "es": "Números ganadores"
+          }
+        },
+        {
+          "key": "draw_date",
+          "type": "string",
+          "label": {
+            "en": "Draw date",
+            "fr": "Date du tirage",
+            "de": "Ziehungsdatum",
+            "es": "Fecha del sorteo"
+          }
+        },
+        {
+          "key": "next_draw",
+          "type": "string",
+          "label": {
+            "en": "Next draw",
+            "fr": "Prochain tirage",
+            "de": "Nächste Ziehung",
+            "es": "Próximo sorteo"
+          }
+        },
+        {
+          "key": "best_matches",
+          "type": "number",
+          "label": {
+            "en": "Numbers matched (best line)",
+            "fr": "Bons numéros (meilleure grille)",
+            "de": "Richtige (beste Tippreihe)",
+            "es": "Aciertos (mejor jugada)"
+          }
+        },
+        {
+          "key": "best_tier",
+          "type": "number",
+          "label": {
+            "en": "Prize tier (0: none)",
+            "fr": "Rang de gain (0 : aucun)",
+            "de": "Gewinnklasse (0: keine)",
+            "es": "Categoría de premio (0: ninguna)"
+          }
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "us_lottery",
+      "label": {
+        "en": "US lotteries",
+        "fr": "Loteries US",
+        "de": "US-Lotterien",
+        "es": "Loterías de EE. UU."
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Last Powerball and Mega Millions numbers, your lines and the next draws.",
+        "fr": "Derniers numéros du Powerball et du Mega Millions, vos grilles et les prochains tirages.",
+        "de": "Letzte Zahlen von Powerball und Mega Millions, deine Tippreihen und die nächsten Ziehungen.",
+        "es": "Últimos números de Powerball y Mega Millions, sus jugadas y los próximos sorteos."
+      },
+      "icon": "award",
+      "settings": [
+        {
+          "key": "games",
+          "type": "multi_select",
+          "label": {
+            "en": "Games shown",
+            "fr": "Jeux affichés",
+            "de": "Angezeigte Spiele",
+            "es": "Juegos mostrados"
+          },
+          "description": {
+            "en": "Empty: both games.",
+            "fr": "Vide : les deux jeux.",
+            "de": "Leer: beide Spiele.",
+            "es": "Vacío: ambos juegos."
+          },
+          "options": [
+            {
+              "value": "powerball",
+              "label": {
+                "en": "Powerball",
+                "fr": "Powerball",
+                "de": "Powerball",
+                "es": "Powerball"
+              }
+            },
+            {
+              "value": "mega_millions",
+              "label": {
+                "en": "Mega Millions",
+                "fr": "Mega Millions",
+                "de": "Mega Millions",
+                "es": "Mega Millions"
+              }
+            }
+          ]
+        },
+        {
+          "key": "show_lines",
+          "type": "boolean",
+          "label": {
+            "en": "Show the result of my lines",
+            "fr": "Afficher le résultat de mes grilles",
+            "de": "Ergebnis meiner Tippreihen zeigen",
+            "es": "Mostrar el resultado de mis jugadas"
+          },
+          "required": false,
+          "default": true
+        },
+        {
+          "key": "show_next_draws",
+          "type": "boolean",
+          "label": {
+            "en": "Show the next draws",
+            "fr": "Afficher les prochains tirages",
+            "de": "Nächste Ziehungen zeigen",
+            "es": "Mostrar los próximos sorteos"
+          },
+          "required": false,
+          "default": true
+        },
+        {
+          "key": "show_notice",
+          "type": "boolean",
+          "label": {
+            "en": "Show the reminder",
+            "fr": "Afficher le rappel",
+            "de": "Hinweis zeigen",
+            "es": "Mostrar el aviso"
+          },
+          "required": false,
+          "default": true
+        }
+      ]
     }
   ]
 }

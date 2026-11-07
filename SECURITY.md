@@ -30,6 +30,16 @@ Gladys before reporting a problem.
 
 In scope: the code of this repository and the Docker image it publishes.
 
+What the integration handles:
+
+- **Network**: outgoing HTTPS requests to `data.ny.gov` only (public open data,
+  no account, no key, no application token). No port is opened.
+- **Stored in `/data`**: the last draw read for each game (`cache.json`) and
+  the last draw announced to the scene triggers (`triggers.json`). Public data
+  only.
+- **Secrets**: none. The lines typed by the user stay in the configuration of
+  Gladys and are never sent anywhere; they are not written to the logs.
+
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+and data.ny.gov.
