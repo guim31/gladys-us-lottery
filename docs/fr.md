@@ -1,67 +1,143 @@
-# Template de démonstration
+# Powerball & Mega Millions
 
-Ceci est la documentation utilisateur de l'intégration. Gladys ré-héberge ce
-fichier et affiche un lien **Documentation** permanent vers lui dans l'écran
-de configuration (dans la langue de l'utilisateur, avec l'anglais en repli) —
-c'est au moment de configurer que l'utilisateur en a le plus besoin. Gardez
-les courtes indications d'accueil dans les blocs `section` du `config_schema`
-du manifest ; mettez ici le pas-à-pas détaillé (captures d'écran, dépannage…).
+Les numéros gagnants des deux grandes loteries américaines multi-États, le Powerball et le Mega Millions, dans
+Gladys : le dernier tirage de chaque jeu, le prochain à l'heure locale et, si vous jouez, le résultat de vos
+grilles. Des déclencheurs de scène réagissent à la publication des numéros, et un widget de tableau de bord
+résume le tout.
 
-## Ce que vous obtenez
+Les numéros viennent des données ouvertes de l'État de New York (data.ny.gov), publiées par la New York State
+Gaming Commission. **Ils sont indicatifs : ce n'est pas une source officielle de validation des gains.** Vérifiez
+toujours vos tickets auprès de la loterie officielle ou d'un revendeur.
 
-Six appareils de démonstration apparaissent après l'installation : une
-station météo (vraies données Open-Meteo), un interrupteur, une lampe
-variable, une prise connectée avec mesure de puissance, un détecteur de
-mouvement et une caméra.
+## Ce qu'il faut
+
+- Gladys Assistant 5.3.0 ou plus récent.
+- Un accès à Internet depuis Gladys. Pas de compte, pas de clé.
 
 ## Configuration
 
-1. Ouvrez l'onglet **Configuration** de l'intégration.
-2. Renseignez la **latitude** et la **longitude** que la station météo de
-   démonstration doit observer (Paris par défaut), et choisissez votre unité
-   de température. L'**intervalle de rafraîchissement** règle la fréquence
-   de lecture de la station météo et de la puissance de la prise : toutes
-   les 5 minutes par défaut, toutes les minutes au plus.
-3. Enregistrez : les appareils apparaissent dans l'onglet **Découverte**,
-   prêts à être ajoutés.
+### Langue
 
-Le réglage **Préférer la connexion locale** pilote la prise de
-démonstration : elle affiche en badge le canal réellement utilisé (local ou
-cloud), avec un point orange quand elle fonctionne en mode dégradé (local
-refusé, bascule cloud).
+La langue des noms de fonctionnalités et des phrases envoyées aux scènes (français par défaut). Les noms sont
+fixés à l'ajout d'un appareil : changez d'abord la langue, puis ajoutez les appareils.
 
-## Actions
+### Vos grilles
 
-- **Tester le fournisseur météo** — effectue une requête en direct vers
-  Open-Meteo et affiche la température et l'humidité actuelles sous le
-  bouton.
-- **Identifier un appareil** — choisissez un de vos appareils dans la liste
-  et il se signale (la lampe de démonstration « clignote » dans les logs).
+Facultatif. Saisissez les grilles que vous jouez, un champ par jeu, séparées par un point-virgule :
 
-## Scènes
+- Powerball : 5 numéros de 1 à 69, puis `+` et le Powerball de 1 à 26, par exemple
+  `5 12 23 34 45 + 6 ; 1 7 19 28 60 + 13` ;
+- Mega Millions : 5 numéros de 1 à 70, puis `+` et la Mega Ball de 1 à 24.
 
-L'intégration ajoute ses propres cartes à l'éditeur de scènes (Gladys 5.1
-ou plus récent), dans la catégorie **Intégrations** :
+Une barre oblique remplace aussi le `+`, et six numéros à la suite se lisent comme cinq numéros et la boule
+bonus. 10 grilles au plus par jeu. Une grille illisible est signalée dans l'état de la connexion : le bouton
+**Vérifier** la nomme.
 
-- **Mouvement détecté** (déclencheur) — lance la scène quand un détecteur
-  de démonstration voit bouger quelque chose. Choisissez éventuellement le
-  détecteur et ce qui a bougé (personne, animal) ; laissés vides, toute
-  détection correspond. Les actions suivantes peuvent lire ce qui a bougé
-  avec `{{triggerEvent.data.target}}`.
-- **Identifier un appareil** (action) — fait se signaler l'appareil choisi.
-  Elle indique si l'appareil a pu se signaler, pour que les actions
-  suivantes puissent en dépendre.
+Avec des grilles, chaque appareil reçoit quatre fonctionnalités de plus : bons numéros de la meilleure grille,
+son rang de gain, le nombre de grilles gagnantes et un résumé en texte. Cliquez sur **Mettre à jour** dans
+l'onglet Découverte pour les ajouter à un appareil déjà ajouté.
 
-## Tableau de bord
+## Les appareils
 
-Ajoutez le widget **État de la démo** à un tableau de bord : il affiche en
-direct la température de la station météo et la puissance de la prise du
-bureau, la connexion utilisée par la prise (en orange si dégradée) et la
-position observée. Son bouton **Identifier la lampe** fait se signaler la
-lampe de démonstration.
+Deux appareils apparaissent dans l'onglet Découverte, **Powerball** et **Mega Millions** :
+
+| Fonctionnalité                  | Valeur                                               |
+| ------------------------------- | ---------------------------------------------------- |
+| Date du dernier tirage          | ex. `mer. 4 nov.`                                    |
+| Numéros du dernier tirage       | ex. `15 34 41 53 56 + 21`                            |
+| Power Play (Powerball)          | le multiplicateur du dernier tirage, ex. `×2`        |
+| Numéros du Double Play          | le tirage Double Play du Powerball                   |
+| Prochain tirage                 | dans le fuseau de Gladys, ex. `mar. 10 nov. · 04:59` |
+| Tirage aujourd'hui / demain     | 1 ou 0, dans le fuseau de Gladys                     |
+| Bons numéros (meilleure grille) | 0 à 6, Powerball ou Mega Ball compris                |
+| Rang de gain (meilleure grille) | 1 (jackpot) à 9, 0 sans gain                         |
+| Grilles gagnantes               | combien de vos grilles gagnent un lot                |
+| Résultat de vos grilles         | ex. `3 + Powerball (rang 5) · 1/2 grille gagnante`   |
+
+Les neuf rangs de gain sont les mêmes pour les deux jeux :
+
+| Rang | Boules trouvées           |
+| ---- | ------------------------- |
+| 1    | 5 + boule bonus (jackpot) |
+| 2    | 5                         |
+| 3    | 4 + boule bonus           |
+| 4    | 4                         |
+| 5    | 3 + boule bonus           |
+| 6    | 3                         |
+| 7    | 2 + boule bonus           |
+| 8    | 1 + boule bonus           |
+| 9    | boule bonus seule         |
+
+Aucun montant n'est affiché : le jackpot n'est pas dans les données ouvertes, le Power Play et le
+multiplicateur du Mega Millions changent les autres gains, et la Californie paie des montants au pari mutuel.
+
+## Widget de tableau de bord
+
+Le widget **Loteries US** montre les derniers numéros de chaque jeu, un badge avec le meilleur résultat de vos
+grilles (touchez un jeu pour le détail grille par grille), les prochains tirages et un court rappel. Ses réglages
+choisissent les jeux et masquent le résultat des grilles, les prochains tirages ou le rappel.
+
+## Déclencheurs de scène
+
+Chaque déclencheur peut être limité à un jeu. Ils se déclenchent une fois par tirage, à la publication des
+numéros, pour un tirage des quatre derniers jours.
+
+### Nouveau tirage publié
+
+À chaque nouveau tirage. Variables : le jeu, la phrase de résumé (prête à envoyer), la date, les numéros, la
+boule bonus, le Power Play et le résultat de vos grilles.
+
+### Bons numéros
+
+À chaque nouveau tirage, si vous avez saisi des grilles, avec le nombre de boules trouvées par votre meilleure
+grille (0 à 6). Cochez 3, 4, 5 et 6 pour « au moins 3 ».
+
+### Grille gagnante
+
+Quand une de vos grilles atteint un rang de gain. Le filtre peut ne garder que certains rangs (1 et 2 pour les
+gros lots).
+
+## Action de scène
+
+**Lire le dernier tirage** renvoie une phrase prête à envoyer (« Les numéros du Powerball du mercredi
+4 novembre : … »), avec le résultat de vos grilles et le prochain tirage, ainsi que les numéros, la date, le
+prochain tirage, les bons numéros et le rang de gain pour les actions suivantes.
+
+## Exemples de scènes
+
+- Déclencheur **Nouveau tirage publié**, puis envoi de la variable `summary` dans un message.
+- Déclencheur **Grille gagnante**, rangs 1 à 4 : notification « Vérifiez votre ticket ! ».
+- Chaque jour à 18 h, condition **Tirage demain** = 1 sur Powerball (en Europe, le tirage tombe dans la nuit),
+  ou **Tirage aujourd'hui** = 1 en Amérique : un rappel pour jouer.
 
 ## Dépannage
 
-L'intégration journalise tout ce qu'elle fait : consultez les logs de
-l'intégration depuis l'interface Gladys (ou `docker logs` sur l'hôte) avec
-`LOG_LEVEL=debug` pour le détail complet.
+- **Pas de numéros** : l'intégration lit data.ny.gov une fois par heure (toutes les 10 minutes après un échec).
+  **Vérifier** le relit tout de suite ; le compte rendu dit si data.ny.gov a répondu.
+- **Une grille n'est pas comprise** : vérifiez le format (5 numéros, `+`, la boule bonus) et les bornes.
+- **Nouvelles fonctionnalités absentes** : des grilles ajoutées après l'appareil demandent **Mettre à jour**
+  dans l'onglet Découverte.
+- **Journaux** : `LOG_LEVEL=debug` montre chaque lecture.
+
+## Limites
+
+- data.ny.gov publie les numéros le lendemain matin du tirage (heure de New York) : ils arrivent dans Gladys
+  quelques heures après le tirage, dans l'heure qui suit leur publication.
+- Les heures de tirage suivent le calendrier officiel (Powerball : lundi, mercredi, samedi à 22 h 59, heure de
+  l'Est ; Mega Millions : mardi et vendredi à 23 h). Un changement exceptionnel de calendrier n'est pas connu.
+- Vos grilles sont comparées au tirage principal du Powerball, pas au Double Play.
+- Pas de montant, pas de jackpot : voir plus haut.
+- Vos retours sont les bienvenus sur le forum ou dans les issues GitHub.
+
+## Données et crédits
+
+Données : [Lottery Powerball Winning Numbers](https://data.ny.gov/d/d6yy-54nr) et
+[Lottery Mega Millions Winning Numbers](https://data.ny.gov/d/5xaw-6ayf), New York State Gaming Commission, sur
+data.ny.gov. Lues une fois par heure et par jeu, sans jeton d'application. Cette intégration n'est affiliée ni
+au Powerball, ni au Mega Millions, ni à la Multi-State Lottery Association, ni à la New York Lottery.
+
+## Jeu responsable
+
+Les loteries sont interdites aux mineurs (18 ans ou plus selon les États). Ne jouez que ce que vous pouvez vous
+permettre de perdre. Si le jeu devient un problème, appelez le 1-800-GAMBLER (États-Unis) ou, en France,
+Joueurs Info Service au 09 74 75 13 13.
