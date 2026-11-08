@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-08
+
 ### Added
 
 - Powerball and Mega Millions winning numbers from the open data of the State
@@ -24,4 +26,5 @@ the notes of the version's GitHub Release.
   next draws.
 - English, French, German and Spanish texts and documentation.
 
-[Unreleased]: https://github.com/guim31/gladys-us-lottery/commits/main
+[Unreleased]: https://github.com/guim31/gladys-us-lottery/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-us-lottery/releases/tag/v1.0.0
